@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Translator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✨ Gemini Translator</h1>
+            <p>Translate text seamlessly with the power of Google's Gemini AI.</p>
+        </header>
+
+        <main>
+            <form action="/" method="post" class="translator-form">
+                <div class="language-selector">
+                    <!-- Source Language -->
+                    <div class="language-box">
+                        <label for="source_language">From</label>
+                        <select name="source_language" id="source_language" required>
+                            {% for lang in languages %}
+                                <option value="{{ lang }}" {% if lang == source_language_selected %}selected{% endif %}>
+                                    {{ lang.title() }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Swap Button (Optional JavaScript feature) -->
+                    <div class="swap-icon">⇄</div>
+
+                    <!-- Target Language -->
+                    <div class="language-box">
+                        <label for="target_language">To</label>
+                        <select name="target_language" id="target_language" required>
+                            {% for lang in languages %}
+                                <option value="{{ lang }}" {% if lang == target_language_selected %}selected{% endif %}>
+                                    {{ lang.title() }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <textarea name="user_text" placeholder="Enter text to translate..." required>{{ original_text or '' }}</textarea>
+                <button type="submit">Translate</button>
+            </form>
+
+            {% if error %}
+                <div class="result-box error">
+                    <h3>Error</h3>
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
+
+            {% if translation %}
+                <div class="result-box">
+                    <h3>Translation Result</h3>
+                    <p class="translated-text">{{ translation }}</p>
+                </div>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p>Powered by Flask & Google Gemini</p>
+        </footer>
+    </div>
+</body>
+</html>
